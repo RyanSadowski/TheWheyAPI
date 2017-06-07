@@ -11,9 +11,8 @@ userRoutes        = require("./routes/userRoutes");
 
 
 var app = express();
-app.use(bodyParser.json({
-  extended: true
-}));
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors());
 
 var router = express.Router();

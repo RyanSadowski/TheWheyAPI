@@ -15,7 +15,7 @@ userRoutes.get('/all', function(req, res) {
 });
 
 userRoutes.post('/setup', function(req, res){
-  console.log(req.body);
+  console.log(req);
   var user = new User({
     username: req.body.username,
     password: bcrypt.hashSync(req.body.password, 10),
