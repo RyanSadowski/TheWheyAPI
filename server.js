@@ -6,7 +6,9 @@ jwt               = require('jsonwebtoken'), // used to create, sign, and verify
 config            = require('./config'), // get our config file
 bcrypt            = require("bcrypt"),
 User              = require("./models/user"),
+Lift              = require("./models/lift"),
 userRoutes        = require("./routes/userRoutes");
+liftRoutes        = require("./routes/liftRoutes");
 
 
 
@@ -27,6 +29,7 @@ router.get('/', function(req, res) {
 });
 
 app.use('/user', userRoutes);
+app.use('/lifts', liftRoutes);
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || config.database)

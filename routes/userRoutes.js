@@ -85,17 +85,12 @@ userRoutes.post("/auth", function(req, res) {
         // if user is found and password is right
         // create a token
         var token = jwt.sign(user, app.get('superSecret'), {
-          expiresIn: 18000 // expires in 60*5 minutes
+          expiresIn: 180000 // expires in 60*5 minutes
         });
 
         // return the information including token as JSON
         res.status(201).json({
-          success: true,
-          message: 'Enjoy your token!',
-          username: user.username,
-          userId: user._id,
-          admin: user.admin,
-          token: token
+          token
         });
       }
     }
