@@ -90,7 +90,9 @@ userRoutes.post("/auth", function(req, res) {
 
         // return the information including token as JSON
         res.status(201).json({
-          token
+          success: true,
+          token: token,
+          username: req.body.username
         });
       }
     }
