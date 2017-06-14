@@ -8,12 +8,6 @@ var app = express();
 
 app.set('superSecret', process.env.Secret_key || config.secret);
 
-userRoutes.get('/all', function(req, res) {
-  User.find({}, function(err, users) {
-    res.json(users);
-  });
-});
-
 userRoutes.post('/setup', function(req, res){
   console.log(req);
   var user = new User({
@@ -96,6 +90,45 @@ userRoutes.post("/auth", function(req, res) {
         });
       }
     }
+  });
+});
+
+userRoutes.use(function(req, res, next) {
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  // decode token
+  if (token) {
+    // verifies secret and checks exp
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to authenticate token.'
+        });
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        next();
+      }
+    });
+
+  } else {
+    // if there is no token
+    // return an error
+    return res.status(403).send({
+      success: false,
+      message: 'Not authenticated'
+    });
+  }
+});
+
+/*=========================
+NEED A TOKEN FOR ANYTHING AFTER THIS COMMENT
+==========================*/
+
+userRoutes.get('/all', function(req, res) {
+  User.find({}, function(err, users) {
+    res.json(users);
   });
 });
 
