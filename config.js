@@ -1,6 +1,5 @@
 module.exports = {
 
     'secret': 'changeforProd',
-    'database': 'mongodb://localhost:27017/whey'
-
+    'database': 'postgres://whey:whey@localhost:5432/whey'
 };
