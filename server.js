@@ -9,11 +9,14 @@ bcrypt            = require("bcrypt"),
 userRoutes        = require("./routes/userRoutes");
 liftRoutes        = require("./routes/liftRoutes");
 
+var test = false; //require token
 
 var app = express();
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors());
+
+app.set('superSecret', process.env.Secret_key || config.secret);
 
 var router = express.Router();
 
@@ -22,19 +25,46 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/user', userRoutes);
-app.use('/lifts', liftRoutes);
-
 app.get('/', function(req, res) {
-    db.query('SELECT $1::int AS number',['1'], function(err, result){
-      if(err){
-        return console.error("db error : ", err)
+      res.json({ message: 'Server is up. Please see API documentation to use' });
+});
+
+app.use('/user', userRoutes);
+
+if (!test){
+app.use(function(req, res, next) {
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  // decode token
+  if (token) {
+    // verifies secret and checks exp
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: 'bad token.'
+        });
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        next();
       }
-      console.log(result.rows[0].number);
     });
 
-  res.json({ message: 'Please see API documentation' });
+  } else {
+    // if there is no token
+    // return an error
+    return res.status(403).send({
+      success: false,
+      message: 'Need a token homie'
+    });
+  }
 });
+}
+
+app.use('/lifts', liftRoutes);
+
+
 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){

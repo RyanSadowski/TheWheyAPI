@@ -11,8 +11,8 @@ app.set('superSecret', process.env.Secret_key || config.secret);
 userRoutes.post('/setup', function(req, res){
   console.log(req);
 
-  db.query('INSERT INTO users(username, password, email, first, last) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-  [req.body.username, bcrypt.hashSync(req.body.password, 10), req.body.email, req.body.firstName, req.body.lastName],
+  db.query("INSERT INTO users(username, password, email, first, last) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+  [req.body.username, bcrypt.hashSync(req.body.password, 10), req.body.email, req.body.firstName, req.body.lastName],   //, bcrypt.hashSync(req.body.password, 10)
   function(err, result){
     if(err){
       console.error("error saving user ", req.body.username)
@@ -33,19 +33,18 @@ userRoutes.post('/setup', function(req, res){
 
 userRoutes.post("/auth", function(req, res) {
   db.query('SELECT * FROM users WHERE username = ($1)', [req.body.username],function(err, result){
-    console.log(result.rowCount);
-    if(err){
-      //error
-      return res.status(500).json({
-        title: "an error occured",
-        error: err
-      });
-    }else if (result.rowCount == 0 ) {
+    if(!result){
       //username not found
       console.log("username not found " , req.body.username);
       res.status(401).json({
         success: false,
         message: 'Authentication failed. no username ' + req.body.username
+      });
+    }else if(err){
+      //error
+      return res.status(500).json({
+        title: "an error occured",
+        error: err
       });
     }else{
       //username found. Lets compare passwords.
@@ -73,37 +72,11 @@ userRoutes.post("/auth", function(req, res) {
           });
         }
       }
+
     });
   });
 
-  userRoutes.use(function(req, res, next) {
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    // decode token
-    if (token) {
-      // verifies secret and checks exp
-      jwt.verify(token, app.get('superSecret'), function(err, decoded) {
-        if (err) {
-          return res.status(500).json({
-            success: false,
-            message: 'bad token.'
-          });
-        } else {
-          // if everything is good, save to request for use in other routes
-          req.decoded = decoded;
-          next();
-        }
-      });
 
-    } else {
-      // if there is no token
-      // return an error
-      return res.status(403).send({
-        success: false,
-        message: 'Need a token homie'
-      });
-    }
-  });
 
   /*=========================
   NEED A TOKEN FOR ANYTHING AFTER THIS COMMENT
