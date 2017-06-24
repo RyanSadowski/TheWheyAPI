@@ -6,7 +6,6 @@ config            = require('../config'), // get our config file
 bcrypt            = require("bcrypt");
 var app = express();
 
-
 liftRoutes.get('/all', function(req, res) {
   db.query('SELECT * FROM liftlist', function(err, result){
     if(err){
@@ -25,11 +24,9 @@ liftRoutes.get('/all', function(req, res) {
   });
 });
 
-
 liftRoutes.post('/workout', function(req, res){
-  // console.log("adding workout" , req.body);
   db.query("INSERT INTO workoutlog(user_id, type_id, distance, duration, name, description, start, finish, location ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
-  [req.body.user_id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],   //, bcrypt.hashSync(req.body.password, 10)
+  [req.body.user_id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],
   function(err, result){
     if(err){
       console.error("error saving workout ", req.body.name)
@@ -59,7 +56,5 @@ liftRoutes.post('/workout', function(req, res){
     }
   });
 });
-
-
 
 module.exports = liftRoutes;

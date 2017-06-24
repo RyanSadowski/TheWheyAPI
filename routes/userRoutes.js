@@ -3,6 +3,7 @@ db                = require('../db'),
 userRoutes        = express.Router(),
 jwt               = require('jsonwebtoken'), // used to create, sign, and verify tokens
 config            = require('../config'), // get our config file
+userService       = require('../userService'),
 bcrypt            = require("bcrypt");
 var app = express();
 
@@ -76,8 +77,6 @@ userRoutes.post("/auth", function(req, res) {
     });
   });
 
-
-
   /*=========================
   NEED A TOKEN FOR ANYTHING AFTER THIS COMMENT
   ==========================*/
@@ -95,6 +94,30 @@ userRoutes.post("/auth", function(req, res) {
           success: true,
           message: "all users",
           body: result.rows
+        });
+      }
+    });
+  });
+
+  userRoutes.get('/stats/:id', function(req, res) {
+    userService.modXP(req.params.id, 1);
+    db.query('SELECT * FROM users WHERE id = ($1)', [req.params.id],function(err, result){
+      if(err){
+        //error
+        return res.status(500).json({
+          title: "an error occured",
+          error: err
+        });
+      }else if(result.rows[0]){
+        delete result.rows[0].password;
+        return  res.status(201).json({
+          success: true,
+          message: "user stats",
+          body: result.rows
+        });
+      }else{
+        return res.status(201).json({
+          title: "User does not exist"
         });
       }
     });
