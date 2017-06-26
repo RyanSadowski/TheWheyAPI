@@ -81,6 +81,8 @@ userRoutes.post("/auth", function(req, res) {
   NEED A TOKEN FOR ANYTHING AFTER THIS COMMENT
   ==========================*/
 
+
+// We probably shouldn't return the password in the api call when you're looking at all the users.....
   userRoutes.get('/all', function(req, res) {
     db.query('SELECT * FROM users', function(err, result){
       if(err){
@@ -90,6 +92,12 @@ userRoutes.post("/auth", function(req, res) {
           error: err
         });
       }else{
+        //If query was successful
+        for(var i in result.rows){
+          delete result.rows[i].password;
+          //maybe we dont want to pass the email either...
+          delete result.rows[i].email;
+        }
         res.status(201).json({
           success: true,
           message: "all users",
@@ -100,7 +108,6 @@ userRoutes.post("/auth", function(req, res) {
   });
 
   userRoutes.get('/stats/:id', function(req, res) {
-    userService.modXP(req.params.id, 1);
     db.query('SELECT * FROM users WHERE id = ($1)', [req.params.id],function(err, result){
       if(err){
         //error

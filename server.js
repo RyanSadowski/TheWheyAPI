@@ -9,7 +9,7 @@ bcrypt            = require("bcrypt"),
 userRoutes        = require("./routes/userRoutes");
 liftRoutes        = require("./routes/liftRoutes");
 
-var test = false; //require token
+
 
 var app = express();
 app.use(bodyParser.json()); // support json encoded bodies
@@ -29,9 +29,10 @@ app.get('/', function(req, res) {
       res.json({ message: 'Server is up. Please see API documentation to use' });
 });
 
+//user Routes including Auth and Account creation
 app.use('/user', userRoutes);
 
-if (!test){
+// Require a token for the rest of the API routes.
 app.use(function(req, res, next) {
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -60,7 +61,6 @@ app.use(function(req, res, next) {
     });
   }
 });
-}
 
 app.use('/lifts', liftRoutes);
 

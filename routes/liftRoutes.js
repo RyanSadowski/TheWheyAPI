@@ -3,6 +3,7 @@ liftRoutes        = express.Router(),
 db                = require('../db'),
 jwt               = require('jsonwebtoken'), // used to create, sign, and verify tokens
 config            = require('../config'), // get our config file
+userService       = require('../userService'),
 bcrypt            = require("bcrypt");
 var app = express();
 
@@ -49,6 +50,7 @@ liftRoutes.post('/workout', function(req, res){
           }
         });
       }
+      userService.modXP(req.body.user_id, 10); //10 is the number of XP the user gets
       return res.status(201).json({
         success: true,
         body: "workout registered"
