@@ -4,7 +4,7 @@ var userService       = require('./userService');
 
 module.exports.checkLevelUp = function (user_id, xp, level){
   var maxLevel = 0;
-  var nextLevel = level + 2; //stupid zero index.
+  var nextLevel = level + 1; 
   db.query('SELECT * FROM levels', function(err, result){
     if(err){
       console.error("ERROR: ", err)
