@@ -31,10 +31,11 @@ userRoutes.post('/setup', function(req, res){
   });
 });
 
-
+//Authenticate a User and return a token
 userRoutes.post("/auth", function(req, res) {
   db.query('SELECT * FROM users WHERE username = ($1)', [req.body.username],function(err, result){
-    if(!result){
+    console.log(result.rows[0]);
+    if(!result.rows[0]){
       //username not found
       console.log("username not found " , req.body.username);
       res.status(401).json({
