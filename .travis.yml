@@ -3,8 +3,12 @@ language: node_js
 node_js:
   - "node"
 
+services:
+  - postgresql
+
 before_install:
   - npm install
+  - psql -c 'create database thewhey;' -U whey 
 
 script:
     - npm test
