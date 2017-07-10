@@ -3,6 +3,10 @@ const url               = require('url');
 const config            = require('./config'); // get our config file
 
 const params = url.parse(process.env.DATABASE_URL || config.database );
+var sslBool = false;
+  if(process.env.DATABASE_URL){
+    sslBool = true
+  }
 const auth = params.auth.split(':');
 
 const dbConfig = {
@@ -11,7 +15,7 @@ const dbConfig = {
   host: params.hostname,
   port: params.port,
   database: params.pathname.split('/')[1],
-  ssl: true
+  ssl: sslBool
 };
 
 const pool = new pg.Pool(dbConfig);
