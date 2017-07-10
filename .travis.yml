@@ -3,13 +3,7 @@ language: node_js
 node_js:
   - "node"
 
-services:
-  - postgresql
-
 before_install:
-  - psql -c 'CREATE USER whey WITH PASSWORD whey;'
-  - psql -c 'ALTER USER whey WITH SUPERUSER;'
-  - psql -c 'CREATE DATABASE thewhey;' -U whey 
   - npm install
 
 

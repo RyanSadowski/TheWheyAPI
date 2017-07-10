@@ -10,8 +10,7 @@ const dbConfig = {
   password: auth[1],
   host: params.hostname,
   port: params.port,
-  database: params.pathname.split('/')[1],
-  ssl: false
+  database: params.pathname.split('/')[1]
 };
 
 const pool = new pg.Pool(dbConfig);
