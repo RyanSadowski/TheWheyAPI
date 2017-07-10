@@ -7,8 +7,11 @@ services:
   - postgresql
 
 before_install:
+  - psql -c 'CREATE USER whey WITH PASSWORD whey;'
+  - psql -c 'ALTER USER whey WITH SUPERUSER;'
+  - psql -c 'CREATE DATABASE thewhey;' -U whey 
   - npm install
-  - psql -c 'create database thewhey;' -U whey 
+
 
 script:
     - npm test
