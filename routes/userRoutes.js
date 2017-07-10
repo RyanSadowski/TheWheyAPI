@@ -99,7 +99,7 @@ userRoutes.post("/auth", function(req, res) {
           //maybe we dont want to pass the email either...
           delete result.rows[i].email;
         }
-        res.status(201).json({
+        res.status(200).json({
           success: true,
           message: "all users",
           body: result.rows
