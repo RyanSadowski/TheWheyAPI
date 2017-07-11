@@ -4,23 +4,23 @@ var userService       = require('./userService');
 
 module.exports.checkLevelUp = function (user_id, xp, level){
   var maxLevel = 0;
-  var nextLevel = level + 1; 
+  var nextLevel = level + 1;
   db.query('SELECT * FROM levels', function(err, result){
     if(err){
       console.error("ERROR: ", err)
     }else{
       maxLevel = result.rows.length;
-      console.log('level is ', level, ' max level is ', maxLevel );
+      //console.log('level is ', level, ' max level is ', maxLevel );
       if(level < maxLevel){
-        console.log('next level')
+        //console.log('next level')
         db.query('SELECT * FROM levels WHERE id = ($1)', [nextLevel] ,function(err, result){
           if(err){
             console.error("ERROR: ", err)
           }else{
-            console.log(result.rows);
-            console.log('next level is ', nextLevel, ' and you have ', xp, ' of ', result.rows[0].xp );
+            //console.log(result.rows);
+            //console.log('next level is ', nextLevel, ' and you have ', xp, ' of ', result.rows[0].xp );
             if (xp >= result.rows[0].xp){
-              console.log("LEVEL UP");
+              //console.log("LEVEL UP");
               userService.levelUp(user_id, nextLevel);
             }
           }
@@ -35,7 +35,7 @@ module.exports.modXP = function (user_id, xpAmmount){
     if(err){
       console.error("ERROR: ", err)
     }else{
-      console.log("exp: ", result.rows[0].exp);
+      //console.log("exp: ", result.rows[0].exp);
       var newXP = result.rows[0].exp + xpAmmount
       db.query('UPDATE users SET exp = ($1) WHERE id = ($2)', [newXP ,user_id],function(err){
         if(err){

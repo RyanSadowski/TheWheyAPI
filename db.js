@@ -3,6 +3,10 @@ const url               = require('url');
 const config            = require('./config'); // get our config file
 
 const params = url.parse(process.env.DATABASE_URL || config.database );
+var sslBool = false;
+  if(process.env.DATABASE_URL){
+    sslBool = true
+  }
 const auth = params.auth.split(':');
 
 const dbConfig = {
@@ -11,14 +15,14 @@ const dbConfig = {
   host: params.hostname,
   port: params.port,
   database: params.pathname.split('/')[1],
-  ssl: false
+  ssl: sslBool
 };
 
 const pool = new pg.Pool(dbConfig);
 
 
 module.exports.query = function (text, values, callback){
-  console.log('query:', text, values);
+  //console.log('query:', text, values);
   return pool.query(text, values, callback);
 }
 
@@ -27,5 +31,5 @@ module.exports.connect = function (callback){
 }
 
 pool.on('connect', function() {
-  console.log("client made!");
+  //console.log("client made!");
 })
