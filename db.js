@@ -22,7 +22,7 @@ const pool = new pg.Pool(dbConfig);
 
 
 module.exports.query = function (text, values, callback){
-  console.log('query:', text, values);
+  //console.log('query:', text, values);
   return pool.query(text, values, callback);
 }
 
@@ -31,5 +31,5 @@ module.exports.connect = function (callback){
 }
 
 pool.on('connect', function() {
-  console.log("client made!");
+  //console.log("client made!");
 })

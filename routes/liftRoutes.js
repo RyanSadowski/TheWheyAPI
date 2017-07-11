@@ -10,7 +10,6 @@ var app = express();
 liftRoutes.get('/all', function(req, res) {
   db.query('SELECT * FROM liftlist', function(err, result){
     if(err){
-      //error
       return res.status(500).json({
         title: "an error occured",
         error: err
@@ -26,7 +25,6 @@ liftRoutes.get('/all', function(req, res) {
 });
 
 liftRoutes.post('/workout', function(req, res){
-  console.log(req.decoded.id , " workout this is the ID");
   db.query("INSERT INTO workoutlog(user_id, type_id, distance, duration, name, description, start, finish, location ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
   [req.decoded.id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],
   function(err, result){

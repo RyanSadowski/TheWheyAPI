@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 var token = '';
 var id = '';
 
-describe('/GET ALL USERS', () => {
+describe('/USER', () => {
   it('it should Get all users', (done) => {
     chai.request(server)
     .get('/user/all')
@@ -22,9 +22,7 @@ describe('/GET ALL USERS', () => {
       done();
     });
   });
-});
 
-describe('/AUTH USER', () =>{
   it('should authenticate test user', (done) => {
     chai.request(server)
     .post('/user/auth')
@@ -38,9 +36,7 @@ describe('/AUTH USER', () =>{
       done();
     });
   });
-});
 
-describe('/get USER stats', () =>{
   it('should get user stats for test user', (done) => {
     chai.request(server)
     .get('/user/stats/' + id)
@@ -53,10 +49,7 @@ describe('/get USER stats', () =>{
       done();
     });
   });
-});
 
-
-describe('/Delete USER', () =>{
   it('should delete test user', (done) => {
 
     chai.request(server)
@@ -70,10 +63,7 @@ describe('/Delete USER', () =>{
       done();
     });
   });
-});
 
-
-describe('/CREATE USER', () =>{
   it('should CREATE test user', (done) => {
 
     chai.request(server)
