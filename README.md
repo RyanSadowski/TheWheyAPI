@@ -1,4 +1,4 @@
-# TheWhey API
+# TheWhey API        <img src="https://api.travis-ci.org/RyanSadowski/TheWheyAPI.svg?branch=master"height="130">
 
 
 Please see the Wiki tab for API info. 
