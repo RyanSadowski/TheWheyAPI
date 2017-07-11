@@ -26,8 +26,9 @@ liftRoutes.get('/all', function(req, res) {
 });
 
 liftRoutes.post('/workout', function(req, res){
+  console.log(req.decoded.id , " workout this is the ID");
   db.query("INSERT INTO workoutlog(user_id, type_id, distance, duration, name, description, start, finish, location ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
-  [req.body.user_id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],
+  [req.decoded.id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],
   function(err, result){
     if(err){
       console.error("error saving workout ", req.body.name)
@@ -38,7 +39,7 @@ liftRoutes.post('/workout', function(req, res){
     }else{
       for(var i in req.body.lifts){
         db.query("INSERT INTO liftjournal(workoutlog_id, lift_id, sets, reps, weight, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
-        [result.rows[0].id, req.body.lifts[i].lift_id, req.body.lifts[i].sets, req.body.lifts[i].reps, req.body.lifts[i].weight,
+        [req.decoded.id, req.body.lifts[i].lift_id, req.body.lifts[i].sets, req.body.lifts[i].reps, req.body.lifts[i].weight,
         req.body.lifts[i].notes],
         function(err, result){
           if(err){
@@ -50,10 +51,12 @@ liftRoutes.post('/workout', function(req, res){
           }
         });
       }
-      userService.modXP(req.body.user_id, 10); //10 is the number of XP the user gets
+      userService.modXP(req.decoded.id, 10); //10 is the number of XP the user gets
       return res.status(201).json({
         success: true,
-        body: "workout registered"
+        message: "workout registered"
+        /*,
+        req: req.decoded*/
       });
     }
   });
