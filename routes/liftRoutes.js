@@ -37,7 +37,7 @@ liftRoutes.post('/workout', function(req, res){
     }else{
       for(var i in req.body.lifts){
         db.query("INSERT INTO liftjournal(workoutlog_id, lift_id, sets, reps, weight, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
-        [req.decoded.id, req.body.lifts[i].lift_id, req.body.lifts[i].sets, req.body.lifts[i].reps, req.body.lifts[i].weight,
+        [result.rows[0].id, req.body.lifts[i].lift_id, req.body.lifts[i].sets, req.body.lifts[i].reps, req.body.lifts[i].weight,
         req.body.lifts[i].notes],
         function(err, result){
           if(err){
