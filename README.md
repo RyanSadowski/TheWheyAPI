@@ -1,93 +1,19 @@
+# TheWhey API        ![Travis CI badge](https://api.travis-ci.org/RyanSadowski/TheWheyAPI.svg?branch=master)
 
 
-## /USER
+Please see the Wiki tab for API info. 
 
-#### It it should Get all users
+To set up the project. Make sure that you have NPM and node Installed as well as postgresql running locally on port 5432, Or you can change the config.js file to match your local postgres installation. 
 
-```javascript
-    
-    chai.request(server)
-    .get('/user/all')
-    .end((err, res) => {
-      res.should.have.status(200);
-      res.body.should.be.a('object');
-      res.body.should.have.property('message').eql('all users');
-      res.body.should.have.property('body');
-      done();
-    });
-  
-```
 
-#### It should authenticate test user
+## To get running locally
 
-```javascript
-    
-    chai.request(server)
-    .post('/user/auth')
-    .set('content-type', 'application/json')
-    .send({  "username":"CheryTr33Cutr",  "password":"********"})
-    .end((err, res) => {
-      res.should.have.status(201);
-      res.body.should.be.a('object');
-      token = res.body.token;
-      id = res.body.id;
-      done();
-    });
-  
-```
+* `npm install`
 
-#### It should get user stats for test user
+* setup your config file with your DB info
 
-```javascript
-    
-    chai.request(server)
-    .get('/user/stats/' + id)
-    .set('content-type', 'application/json')
-    .end((err, res) => {
-      res.should.have.status(200);
-      res.body.should.be.a('object');
-      res.body.should.have.property('message').eql('user stats');
-      res.body.should.have.property('success').eql(true);
-      done();
-    });
-  
-```
+* `npm start`
 
-#### It should delete test user
+Tests can be run with `npm test`
 
-```javascript
-    
-
-    chai.request(server)
-    .delete('/user/rip')
-    .set('content-type', 'application/json')
-    .set('x-access-token', token)
-    .end((err, res) => {
-      res.should.have.status(201);
-      res.body.should.be.a('object');
-      res.body.should.have.property('message').eql('user deleted');
-      done();
-    });
-  
-```
-
-#### It should CREATE test user
-
-```javascript
-    
-
-    chai.request(server)
-    .post('/user/setup')
-    .set('content-type', 'application/json')
-    .send({"username":"CheryTr33Cutr",  "password":"********",  "firstName":"Abraham",
-    "lastName":"Lincoln",  "email":"CheryTr33Cutr@Wmail.net"})
-    .end((err, res) => {
-      res.should.have.status(201);
-      res.body.should.be.a('object');
-      res.body.should.have.property('message').eql('user registered');
-      res.body.should.have.property('success').eql(true);
-      done();
-    });
-  
-```
-
+Documentation can be generated with `npm run documentation`
