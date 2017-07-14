@@ -15,3 +15,5 @@ To set up the project. Make sure that you have NPM and node Installed as well as
 * `npm start`
 
 Tests can be run with `npm test`
+
+Documentation can be generated with `npm run documentation`

@@ -21,7 +21,6 @@ app.set('superSecret', process.env.Secret_key || config.secret);
 var router = express.Router();
 
 app.use(function(req, res, next) {
-  console.log('the journey has begun');
   next();
 });
 
@@ -63,6 +62,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/lifts', liftRoutes);
+
 
 
 
