@@ -1,15 +1,17 @@
 {
-  "name": "api",
-  "version": "1.0.0",
-  "description": "",
+  "name": "theWheyApi",
+  "version": "0.1.0",
+  "description": "API for the whey game",
   "main": "server.js",
   "scripts": {
     "test": "mocha test",
-    "start": "node server.js"
+    "start": "node server.js",
+    "documentation": "node makeDocumentation.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "acquit": "^0.4.1",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "chai": "^4.0.2",
