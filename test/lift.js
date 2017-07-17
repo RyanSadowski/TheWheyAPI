@@ -41,6 +41,20 @@ describe('/LIFTS', () =>{
     });
   });
 
+  it('should Get the workout types', (done) => {
+    chai.request(server)
+    .get('/lifts/workout')
+    .set('content-type', 'application/json')
+    .set('x-access-token', token)
+    .end((err, res) => {
+      res.should.have.status(201);
+      res.body.should.be.a('object');
+      res.body.should.have.property('message').eql('all workouts');
+      res.body.should.have.property('success').eql(true);
+      done();
+    });
+  });
+
   it('should post a workout for test user', (done) => {
     //console.log(token, " toek ", id , " id")
     chai.request(server)

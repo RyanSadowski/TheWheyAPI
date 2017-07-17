@@ -24,6 +24,23 @@ liftRoutes.get('/all', function(req, res) {
   });
 });
 
+liftRoutes.get('/workout', function(req, res) {
+  db.query('SELECT * FROM workouttypes', function(err, result){
+    if(err){
+      return res.status(500).json({
+        title: "an error occured",
+        error: err
+      });
+    }else{
+      res.status(201).json({
+        success: true,
+        message: "all workouts",
+        body: result.rows
+      });
+    }
+  });
+});
+
 liftRoutes.post('/workout', function(req, res){
   db.query("INSERT INTO workoutlog(user_id, type_id, distance, duration, name, description, start, finish, location ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
   [req.decoded.id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],
