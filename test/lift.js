@@ -56,7 +56,6 @@ describe('/LIFTS', () =>{
   });
 
   it('should post a workout for test user', (done) => {
-    //console.log(token, " toek ", id , " id")
     chai.request(server)
     .post('/lifts/workout')
     .set('content-type', 'application/json')
@@ -66,8 +65,8 @@ describe('/LIFTS', () =>{
     .end((err, res) => {
       res.should.have.status(201);
       res.body.should.be.a('object');
-      // res.body.should.have.property('message').eql('workout registered');
-      // res.body.should.have.property('success').eql(true);
+      res.body.should.have.property('message').eql('workout registered');
+      res.body.should.have.property('success').eql(true);
       done();
     });
   });

@@ -24,9 +24,20 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.post('/', function(req, res){
+      res.status(201).json({
+        success: true,
+        data: req.body,
+        message: "Post Works"
+      });
+    });
+
 app.get('/', function(req, res) {
       res.json({ message: 'Server is up. Please see API documentation to use' });
 });
+
+
+
 
 //user Routes including Auth and Account creation
 app.use('/user', userRoutes);
