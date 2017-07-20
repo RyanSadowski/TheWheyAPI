@@ -18,4 +18,16 @@ describe('Ping', () => {
         done();
       });
   });
+  it('it should see its own post data', (done) => {
+    chai.request(server)
+      .post('/')
+      .set('content-type', 'application/json')
+      .send({"random_data":"1234567asdfb"  })
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.body.should.be.a('object');
+        res.body.should.have.property('data');
+        done();
+      });
+  });
 });
