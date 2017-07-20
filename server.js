@@ -35,10 +35,7 @@ app.post('/', function(req, res){
         data: req,
         message: "Post Works"
       });
-    }
-  });
-});
-
+    });
 
 //user Routes including Auth and Account creation
 app.use('/user', userRoutes);
