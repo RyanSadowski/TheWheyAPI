@@ -25,6 +25,7 @@ app.use(function(req, res, next) {
 });
 
 app.post('/', function(req, res){
+  console.log(req.body);
       res.status(201).json({
         success: true,
         data: req.body,
