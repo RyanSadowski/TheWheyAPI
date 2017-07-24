@@ -106,7 +106,7 @@ userRoutes.post("/auth", function(req, res) {
   });
 
   //We'll want to get anyone's stats
-  userRoutes.get('/stats/:id', function(req, res) {
+  userRoutes.post('/stats/:id', function(req, res) {
     db.query('SELECT * FROM users WHERE id = ($1)', [req.params.id],function(err, result){
       if(err){
         //error
