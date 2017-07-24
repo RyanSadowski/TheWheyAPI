@@ -24,7 +24,7 @@ liftRoutes.post('/all', function(req, res) {
   });
 });
 
-liftRoutes.post('/workout', function(req, res) {
+liftRoutes.post('/workouttypes', function(req, res) {
   db.query('SELECT * FROM workouttypes', function(err, result){
     if(err){
       return res.status(500).json({
