@@ -39,7 +39,7 @@ describe('/USER', () => {
 
   it('should get user stats for test user', (done) => {
     chai.request(server)
-    .get('/user/stats/' + id)
+    .post('/user/stats/' + id)
     .set('content-type', 'application/json')
     .end((err, res) => {
       res.should.have.status(200);

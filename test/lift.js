@@ -29,7 +29,7 @@ describe('/LIFTS', () =>{
 
   it('should Get the lifts', (done) => {
     chai.request(server)
-    .get('/lifts/all')
+    .post('/lifts/all')
     .set('content-type', 'application/json')
     .set('x-access-token', token)
     .end((err, res) => {
@@ -43,7 +43,7 @@ describe('/LIFTS', () =>{
 
   it('should Get the workout types', (done) => {
     chai.request(server)
-    .get('/lifts/workout')
+    .post('/lifts/workouttypes')
     .set('content-type', 'application/json')
     .set('x-access-token', token)
     .end((err, res) => {

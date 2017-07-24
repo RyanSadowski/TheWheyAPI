@@ -7,7 +7,7 @@ userService       = require('../userService'),
 bcrypt            = require("bcrypt");
 var app = express();
 
-liftRoutes.get('/all', function(req, res) {
+liftRoutes.post('/all', function(req, res) {
   db.query('SELECT * FROM liftlist', function(err, result){
     if(err){
       return res.status(500).json({
@@ -24,7 +24,7 @@ liftRoutes.get('/all', function(req, res) {
   });
 });
 
-liftRoutes.get('/workout', function(req, res) {
+liftRoutes.post('/workouttypes', function(req, res) {
   db.query('SELECT * FROM workouttypes', function(err, result){
     if(err){
       return res.status(500).json({
