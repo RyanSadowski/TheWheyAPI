@@ -8,6 +8,7 @@ config            = require('./config'), // get our config file
 bcrypt            = require("bcrypt"),
 userRoutes        = require("./routes/userRoutes");
 liftRoutes        = require("./routes/liftRoutes");
+levelRoutes        = require("./routes/levelRoutes");
 
 
 
@@ -73,10 +74,9 @@ app.use(function(req, res, next) {
   }
 });
 
+
 app.use('/lifts', liftRoutes);
-
-
-
+app.use('/level', levelRoutes);
 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
