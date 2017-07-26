@@ -10,7 +10,7 @@ var app = express();
 app.set('superSecret', process.env.Secret_key || config.secret);
 
   // We probably shouldn't return the password in the api call when you're looking at all the users.....
-  userRoutes.get('/all', function(req, res) {
+  userRoutes.post('/all', function(req, res) {
     db.query('SELECT * FROM levels', function(err, result){
       if(err){
         //error
