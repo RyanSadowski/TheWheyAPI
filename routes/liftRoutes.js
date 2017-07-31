@@ -78,18 +78,4 @@ liftRoutes.post('/workout', function (req, res) {
     });
 });
 
-liftRoutes.post('/home', function (req, res) {
-  console.log(req.decoded.id);
-  userService.getHomeData(req.decoded.id).then(function (terd, werd) {
-    return res.status(201).json({
-       lifts: terd[0],
-       workouts: terd[1],
-       userData: terd[2],
-       level: terd[3],
-       journal: terd[4],
-       inventory: terd[5]
-    })
-  })
-});
-
 module.exports = liftRoutes;
