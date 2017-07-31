@@ -14,6 +14,7 @@ homeRoutes.post('/', function (req, res) {
     console.log(req.decoded.id);
     userService.getHomeData(req.decoded.id).then(function (terd, werd) {
         return res.status(201).json({
+            success: true,
             lifts: terd[0],
             workouts: terd[1],
             userData: terd[2],
