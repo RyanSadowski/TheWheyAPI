@@ -102,10 +102,11 @@ module.exports.getWorkoutTypes = function (value) {
 
 module.exports.getUserData = function (userId) {
   return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM users WHERE id = ($1)', [1], function (err, result) {
+    db.query('SELECT * FROM users WHERE id = ($1)', [userId], function (err, result) {
       if (err) {
         reject(err);
       } else {
+        delete result.rows[0].password;
         console.log(result.rows);
         resolve(result.rows);
       }
@@ -115,7 +116,7 @@ module.exports.getUserData = function (userId) {
 
 module.exports.getLevels = function (userId) {
   return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM users WHERE id = ($1)', [1], function (err, result) {
+    db.query('SELECT * FROM users WHERE id = ($1)', [userId], function (err, result) {
       if (err) {
         reject(err);
       } else {
@@ -132,13 +133,13 @@ module.exports.getLevels = function (userId) {
 }
 module.exports.getJournal = function (userId) {
   return new Promise((resolve, reject) => {
-  resolve("TBD");
+  resolve("TBD" + userId);
   })
 }
 
 module.exports.getInventory = function (userId) {
   return new Promise((resolve, reject) => {
-  resolve("TBD");
+  resolve("TBD" + userId);
   })
 }
 
@@ -167,12 +168,12 @@ module.exports.getHomeData = function (userId) {
     });
   }))
   promises.push(new Promise((resolve, reject) => {
-    this.getJournal().then(function (werd) {
+    this.getJournal(userId).then(function (werd) {
       resolve(werd);
     });
   }))
   promises.push(new Promise((resolve, reject) => {
-    this.getInventory().then(function (werd) {
+    this.getInventory(userId).then(function (werd) {
       resolve(werd);
     });
   }))
