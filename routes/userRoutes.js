@@ -5,6 +5,7 @@ jwt               = require('jsonwebtoken'), // used to create, sign, and verify
 config            = require('../config'), // get our config file
 userService       = require('../userService'),
 bcrypt            = require("bcrypt");
+
 var app = express();
 
 app.set('superSecret', process.env.Secret_key || config.secret);
@@ -177,5 +178,7 @@ userRoutes.post("/auth", function(req, res) {
     }
 
   })
+
+
 
   module.exports = userRoutes;
