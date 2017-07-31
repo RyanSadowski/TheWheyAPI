@@ -78,8 +78,7 @@ app.use(function(req, res, next) {
 
 app.use('/lifts', liftRoutes);
 app.use('/level', levelRoutes);
-app.use('/werd', homeRoutes);
-//app.use('/turd', homeRoutes);
+app.use('/home', homeRoutes);
 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
