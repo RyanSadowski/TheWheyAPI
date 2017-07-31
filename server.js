@@ -6,9 +6,10 @@ pg                = require('pg'),
 jwt               = require('jsonwebtoken'), // used to create, sign, and verify tokens
 config            = require('./config'), // get our config file
 bcrypt            = require("bcrypt"),
-userRoutes        = require("./routes/userRoutes");
-liftRoutes        = require("./routes/liftRoutes");
+userRoutes        = require("./routes/userRoutes"),
+liftRoutes        = require("./routes/liftRoutes"),
 levelRoutes        = require("./routes/levelRoutes");
+var homeRoutes        = require("./routes/homeRoutes");
 
 
 
@@ -77,6 +78,8 @@ app.use(function(req, res, next) {
 
 app.use('/lifts', liftRoutes);
 app.use('/level', levelRoutes);
+app.use('/werd', homeRoutes);
+//app.use('/turd', homeRoutes);
 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
