@@ -41,8 +41,9 @@ liftRoutes.post('/workouttypes', function (req, res) {
     }
   });
 });
-
-liftRoutes.post('/workout', function (req, res) {
+//Unity sucks and I have to use a put request
+liftRoutes.put('/workout', function (req, res) {
+  console.log(req.body);
   db.query("INSERT INTO workoutlog(user_id, type_id, distance, duration, name, description, start, finish, location ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
     [req.decoded.id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],
     function (err, result) {
