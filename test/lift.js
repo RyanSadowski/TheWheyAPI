@@ -57,7 +57,7 @@ describe('/LIFTS', () =>{
 
   it('should post a workout for test user', (done) => {
     chai.request(server)
-    .post('/lifts/workout')
+    .put('/lifts/workout')
     .set('content-type', 'application/json')
     .set('x-access-token', token)
     .send({"type_id":5,"name":"test Workout","description":"I did a workout today, PR squat of 1000#",
