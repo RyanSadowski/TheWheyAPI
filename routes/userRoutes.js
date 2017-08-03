@@ -45,7 +45,8 @@ userRoutes.post("/auth", function (req, res) {
     } else if (err) {
       //error
       return res.status(500).json({
-        title: "an error occured",
+        success: false,
+        message: "an error occured",
         error: err
       });
     } else {

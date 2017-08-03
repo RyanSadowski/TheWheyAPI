@@ -61,26 +61,28 @@ liftRoutes.put('/workout', function (req, res) {
           db.query("INSERT INTO liftjournal(workoutlog_id, lift_id, sets, reps, weight, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
             [result.rows[0].id, req.body.lifts[i].lift_id, req.body.lifts[i].sets, req.body.lifts[i].reps, req.body.lifts[i].weight,
             req.body.lifts[i].notes],
-            function (err, result) {
+            function (err, results) {
               if (err) {
-                console.error("error saving workout in lifts ", req.body.name)
+                console.error("error saving workout in lifts ", req.body.name);
                 return res.status(500).json({
                   success: false,
                   message: "an error occured",
                   error: err
                 });
+              } else {
+                userService.modXP(req.decoded.id, 10); //10 is the number of XP the user gets
+                return res.status(201).json({
+                  success: true,
+                  message: "workout registered"
+                  /*,
+                  req: req.decoded*/
+                });
               }
             });
         }
-        userService.modXP(req.decoded.id, 10); //10 is the number of XP the user gets
-        return res.status(201).json({
-          success: true,
-          message: "workout registered"
-          /*,
-          req: req.decoded*/
-        });
       }
     });
 });
+
 
 module.exports = liftRoutes;
