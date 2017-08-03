@@ -18,6 +18,7 @@ describe('/USER', () => {
       res.should.have.status(200);
       res.body.should.be.a('object');
       res.body.should.have.property('message').eql('all users');
+      res.body.should.have.property('success').eql(true);
       res.body.should.have.property('body');
       done();
     });
@@ -31,6 +32,7 @@ describe('/USER', () => {
     .end((err, res) => {
       res.should.have.status(201);
       res.body.should.be.a('object');
+      res.body.should.have.property('success').eql(true);
       token = res.body.token;
       id = res.body.id;
       done();
@@ -50,6 +52,19 @@ describe('/USER', () => {
     });
   });
 
+
+   it('it should Get all the Home Screen info', (done) => {
+    chai.request(server)
+      .post('/home/')
+      .set('x-access-token', token)
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.body.should.be.a('object');
+        res.body.should.have.property('success').eql(true);
+        done();
+      });
+  });
+
   it('should delete test user', (done) => {
 
     chai.request(server)
@@ -59,6 +74,7 @@ describe('/USER', () => {
     .end((err, res) => {
       res.should.have.status(201);
       res.body.should.be.a('object');
+      res.body.should.have.property('success').eql(true);
       res.body.should.have.property('message').eql('user deleted');
       done();
     });

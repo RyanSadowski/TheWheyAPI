@@ -21,6 +21,7 @@ describe('/LIFTS', () =>{
     .end((err, res) => {
       res.should.have.status(201);
       res.body.should.be.a('object');
+      res.body.should.have.property('success').eql(true);
       token = res.body.token;
       id = res.body.id;
       done();

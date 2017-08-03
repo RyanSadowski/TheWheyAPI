@@ -17,7 +17,8 @@ userRoutes.post('/setup', function (req, res) {
       if (err) {
         console.error("error saving user ", req.body.username)
         return res.status(500).json({
-          title: "an error occured",
+          success: false,
+          message: "an error occured",
           error: err
         });
       } else {
@@ -88,7 +89,8 @@ userRoutes.get('/all', function (req, res) {
     if (err) {
       //error
       return res.status(500).json({
-        title: "an error occured",
+        success: false,
+        message: "an error occured",
         error: err
       });
     } else {
@@ -113,7 +115,8 @@ userRoutes.post('/stats/:id', function (req, res) {
     if (err) {
       //error
       return res.status(500).json({
-        title: "an error occured",
+        success: false,
+        message: "an error occured",
         error: err
       });
     } else if (result.rows[0]) {
@@ -125,7 +128,8 @@ userRoutes.post('/stats/:id', function (req, res) {
       });
     } else {
       return res.status(204).json({
-        title: "User does not exist"
+        success: false,
+        message: "User does not exist"
       });
     }
   });
@@ -149,7 +153,8 @@ userRoutes.delete('/rip', function (req, res) {
           if (err) {
             //error
             return res.status(500).json({
-              title: "an error occured",
+              success: false,
+              message: "an error occured",
               error: err
             });
           } else if (result.rowCount == 1) {

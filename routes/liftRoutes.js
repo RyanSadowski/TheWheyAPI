@@ -12,7 +12,8 @@ liftRoutes.post('/all', function (req, res) {
   db.query('SELECT * FROM liftlist', function (err, result) {
     if (err) {
       return res.status(500).json({
-        title: "an error occured",
+        success: false,
+        message: "an error occured",
         error: err
       });
     } else {
@@ -29,7 +30,8 @@ liftRoutes.post('/workouttypes', function (req, res) {
   db.query('SELECT * FROM workouttypes', function (err, result) {
     if (err) {
       return res.status(500).json({
-        title: "an error occured",
+        success: false,
+        message: "an error occured",
         error: err
       });
     } else {
@@ -50,7 +52,8 @@ liftRoutes.put('/workout', function (req, res) {
       if (err) {
         console.error("error saving workout ", req.body.name)
         return res.status(500).json({
-          title: "an error occured",
+          success: false,
+          message: "an error occured",
           error: err
         });
       } else {
@@ -62,7 +65,8 @@ liftRoutes.put('/workout', function (req, res) {
               if (err) {
                 console.error("error saving workout in lifts ", req.body.name)
                 return res.status(500).json({
-                  title: "an error occured",
+                  success: false,
+                  message: "an error occured",
                   error: err
                 });
               }

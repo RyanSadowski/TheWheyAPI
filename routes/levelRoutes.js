@@ -15,7 +15,8 @@ app.set('superSecret', process.env.Secret_key || config.secret);
       if(err){
         //error
         return res.status(500).json({
-          title: "an error occured",
+          success: false,
+          message: "an error occured",
           error: err
         });
       }else{
