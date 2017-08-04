@@ -44,44 +44,18 @@ liftRoutes.post('/workouttypes', function (req, res) {
   });
 });
 //Unity sucks and I have to use a put request
+
 liftRoutes.put('/workout', function (req, res) {
-  console.log(req.body);
-  db.query("INSERT INTO workoutlog(user_id, type_id, distance, duration, name, description, start, finish, location ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
-    [req.decoded.id, req.body.type_id, req.body.distance, req.body.duration, req.body.name, req.body.description, req.body.start, req.body.finish, req.body.location],
-    function (err, result) {
-      if (err) {
-        console.error("error saving workout ", req.body.name)
-        return res.status(500).json({
-          success: false,
-          message: "an error occured",
-          error: err
-        });
-      } else {
-        for (var i in req.body.lifts) {
-          db.query("INSERT INTO liftjournal(workoutlog_id, lift_id, sets, reps, weight, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
-            [result.rows[0].id, req.body.lifts[i].lift_id, req.body.lifts[i].sets, req.body.lifts[i].reps, req.body.lifts[i].weight,
-            req.body.lifts[i].notes],
-            function (err, results) {
-              if (err) {
-                console.error("error saving workout in lifts ", req.body.name);
-                return res.status(500).json({
-                  success: false,
-                  message: "an error occured",
-                  error: err
-                });
-              } else {
-                userService.modXP(req.decoded.id, 10); //10 is the number of XP the user gets
-                return res.status(201).json({
-                  success: true,
-                  message: "workout registered"
-                  /*,
-                  req: req.decoded*/
-                });
-              }
-            });
-        }
-      }
-    });
+    //console.log(req.decoded.id);
+    userService.saveWorkoutData(req.body, req.decoded.id).then(function (data, error) {
+      // console.log(data);
+        return res.status(201).json({
+            success: true,
+           pr: data[0],
+           workout: data[1],
+           xp: data[2]
+        })
+    })
 });
 
 

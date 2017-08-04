@@ -11,16 +11,16 @@ var app = express();
 app.set('superSecret', process.env.Secret_key || config.secret);
 
 homeRoutes.post('/', function (req, res) {
-    console.log(req.decoded.id);
-    userService.getHomeData(req.decoded.id).then(function (terd, werd) {
+    //console.log(req.decoded.id);
+    userService.getHomeData(req.decoded.id).then(function (data, error) {
         return res.status(201).json({
             success: true,
-            lifts: terd[0],
-            workouts: terd[1],
-            userData: terd[2],
-            level: terd[3],
-            journal: terd[4],
-            inventory: terd[5]
+            lifts: data[0],
+            workouts: data[1],
+            userData: data[2],
+            level: data[3],
+            journal: data[4],
+            inventory: data[5]
         })
     })
 });
