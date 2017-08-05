@@ -209,7 +209,7 @@ module.exports.saveWorkout = function (workoutdata, userId) {
   })
 }
 // module.exports.saveLift = function (liftData, workoutID, userId) {
-  
+
 //   return new Promise((resolve, reject) => {
 //     db.query("INSERT INTO liftjournal(workoutlog_id, lift_id, sets, reps, weight, notes, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
 //       [workoutID, liftData.lift_id, liftData.sets, liftData.reps, liftData.weight,
@@ -266,11 +266,18 @@ module.exports.getHomeData = function (userId) {
   }))
   return Promise.all(promises);
 }
-
+module.exports.writeJournal = function (string, userId, type) {
+  db.query("INSERT INTO journal(string, user_id, type) VALUES ($1, $2, $3)",
+    [string, userId, type],
+    function (err, results) {
+      if (err) {
+        console.error("ERROR: ", err);
+      }
+    })
+}
 module.exports.saveWorkoutData = function (workoutJson, userId) {
   var promises = [];
   var workoutID;
-  var response = {};
   promises.push(new Promise((resolve, reject) => {
     this.checkPR(workoutJson.lifts, userId).then(function (prs) {
       resolve(prs);
@@ -280,7 +287,6 @@ module.exports.saveWorkoutData = function (workoutJson, userId) {
     this.saveWorkout(workoutJson, userId).then(function (workout) {
       console.log("workout", workout[0].id);
       workoutID = workout[0].id;
-      response.workout = ("workout " + workout[0].id + " created!");
       resolve("workout " + workout[0].id + " created!");
     })
   }))
