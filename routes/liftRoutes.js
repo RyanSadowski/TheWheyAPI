@@ -17,6 +17,7 @@ liftRoutes.post('/all', function (req, res) {
         error: err
       });
     } else {
+
       res.status(201).json({
         success: true,
         message: "all lifts",
@@ -48,7 +49,8 @@ liftRoutes.post('/workouttypes', function (req, res) {
 liftRoutes.put('/workout', function (req, res) {
     //console.log(req.decoded.id);
     userService.saveWorkoutData(req.body, req.decoded.id).then(function (data, error) {
-      // console.log(data);
+      var journalString = "I did "+ req.body.name + " and got " + data[2] + " xp";
+      userService.writeJournal(journalString, req.decoded.id, "workout");
         return res.status(201).json({
             success: true,
            pr: data[0],
