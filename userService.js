@@ -53,6 +53,8 @@ module.exports.levelUp = function (user_id, nextLevel) {
     if (err) {
       console.error("ERROR: ", err)
     } else {
+      var journalString = "Gratz on Ding Dawg! Reached level " + nextLevel;
+      userService.writeJournal(journalString, user_id, "levelup");
       console.log("gratz on ding dawg");
       return "gratz on ding";
     }
@@ -170,14 +172,27 @@ module.exports.getLiftName = function (liftId) {
 }
 //workoutJson.lifts, userId
 module.exports.checkPR = function (lifts, userId) {
-  var prs = [];
   return new Promise((resolve, reject) => {
+   // console.log(lifts);
     for (var i = 0, len = lifts.length; i < len; i++) {
-      db.query('SELECT * FROM liftjournal WHERE lift_id = ($1) AND user_id = ($2) AND weight > ($3)', [lifts[i].id, userId, lifts[i].weight], function (err, result) {
+      var liftID = lifts[i].lift_id;
+      var weight = lifts[i].weight;
+      var journalString = "";
+      db.query('SELECT * FROM liftjournal WHERE lift_id = ($1) AND user_id = ($2) AND weight >= ($3)', [lifts[i].lift_id, userId, lifts[i].weight], function (err, result) {
         if (err) {
           reject(err);
         } else if (result.rows[0] == null) {
-          resolve("true")
+          console.log(liftID);
+          db.query('SELECT * FROM liftlist WHERE id = ($1)', [liftID], function (err, lift) {
+            if (err) {
+              reject(err);
+            } else {
+              console.log(lift.rows, " ", liftID);
+              var journalString = "Gratz on " + lift.rows[0].name + " PR:" + weight;
+              userService.writeJournal(journalString, userId, "PR");
+              resolve("true");
+            }
+          })
         }
       })
       if (i === (lifts.length - 1)) {
@@ -186,6 +201,7 @@ module.exports.checkPR = function (lifts, userId) {
     }
   })
 }
+
 module.exports.saveWorkout = function (workoutdata, userId) {
   return new Promise((resolve, reject) => {
     db.query("INSERT INTO workoutlog(user_id, type_id, distance, duration, name, description, start, finish, location ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
@@ -214,21 +230,6 @@ module.exports.saveWorkout = function (workoutdata, userId) {
       })
   })
 }
-// module.exports.saveLift = function (liftData, workoutID, userId) {
-
-//   return new Promise((resolve, reject) => {
-//     db.query("INSERT INTO liftjournal(workoutlog_id, lift_id, sets, reps, weight, notes, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id",
-//       [workoutID, liftData.lift_id, liftData.sets, liftData.reps, liftData.weight,
-//         liftData.notes, userId],
-//       function (err, results) {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           resolve(results.rows);
-//         }
-//       })
-//   })
-// }
 
 module.exports.getInventory = function (userId) {
   return new Promise((resolve, reject) => {
@@ -285,13 +286,14 @@ module.exports.saveWorkoutData = function (workoutJson, userId) {
   var promises = [];
   var workoutID;
   promises.push(new Promise((resolve, reject) => {
+    // console.log(workoutJson.lifts);
     this.checkPR(workoutJson.lifts, userId).then(function (prs) {
       resolve(prs);
     })
   }))
   promises.push(new Promise((resolve, reject) => {
     this.saveWorkout(workoutJson, userId).then(function (workout) {
-      console.log("workout", workout[0].id);
+      // console.log("workout", workout[0].id);
       workoutID = workout[0].id;
       resolve("workout " + workout[0].id + " created!");
     })
