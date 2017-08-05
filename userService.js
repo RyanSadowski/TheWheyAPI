@@ -147,7 +147,13 @@ module.exports.getLevels = function (userId) {
 }
 module.exports.getJournal = function (userId) {
   return new Promise((resolve, reject) => {
-    resolve("TBD" + userId);
+    db.query('SELECT * FROM journal WHERE user_id = ($1)', [userId], function (err, result) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result.rows);
+      }
+    })
   })
 }
 
